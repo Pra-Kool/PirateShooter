@@ -1,45 +1,57 @@
-var canvas;
-var backgroundImage, car1_img, car2_img, track;
-var fuelImage, powerCoinImage, lifeImage;
-var obstacle1Image, obstacle2Image;
-var database, gameState;
-var form, player, playerCount;
-var allPlayers, car1, car2, fuels, powerCoins, obstacles;
-var cars = [];
-var blastImg
+var garden,rabbit;
+var gardenImg,rabbitImg;
 
-function preload() {
-  backgroundImage = loadImage("./assets/background.png");
-  car1_img = loadImage("../assets/car1.png");
-  car2_img = loadImage("../assets/car2.png");
-  track = loadImage("../assets/track.jpg");
-  fuelImage = loadImage("./assets/fuel.png");
-  powerCoinImage = loadImage("./assets/goldCoin.png");
-  obstacle1Image = loadImage("./assets/obstacle1.png");
-  obstacle2Image = loadImage("./assets/obstacle2.png");
-  lifeImage = loadImage("./assets/life.png");
-  blastImg = loadImage("./assets/blast.png")
+function preload(){
+  gardenImg = loadImage("garden.png");
+  rabbitImg = loadImage("rabbit.png");
 }
 
-function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
-  database = firebase.database();
-  game = new Game();
-  game.getState();
-  game.start();
+function setup(){
+  
+  createCanvas(400,400);
+  
+// Moving background
+garden=createSprite(200,200);
+garden.addImage(gardenImg);
+
+//creating boy running
+rabbit = createSprite(180,340,30,30);
+rabbit.scale =0.09;
+rabbit.addImage(rabbitImg);
+
+function createApples(){
+  apple = createSprite(random(50,350),40,10,10)
+  apple.addImage("apple.png")
+  apple.velocityY = -2
+  apple.lifeTime = 300
 }
+function createLeaves(){
+  leaf = createSprite(random(50,350),40,10,10)
+  apple.addImage("orangeLeaf.png")
+  apple.velocityY = -2
+  apple.lifeTime = 300
+}
+
+  }
+}
+
 
 function draw() {
-  background(backgroundImage);
-  if (playerCount === 2) {
-    game.update(1);
-  }
+  background(0);
 
-  if (gameState === 1) {
-    game.play();
-  }
-}
+  rabbit.x = World.mouseX
+  
+  edges= createEdgeSprites();
+  rabbit.collide(edges);
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  var select_sprites = Math.round(random(1,2))
+  if(frameCount % 80 == 0){
+    if (select_sprites == 1) {
+      createApples()
+    }
+    else{
+      createLeaves()
+    }
+
+  drawSprites();
 }
